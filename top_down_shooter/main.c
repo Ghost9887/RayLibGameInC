@@ -23,6 +23,7 @@ typedef struct{
 
 
 void playerMovement(Player *player);
+void enemyMovement(Enemy *enemy, Player *player);
 void createPlayerObject(Player *player);
 void drawPlayer(Player *player);
 void createEnemyObject(Enemy *enemy);
@@ -48,6 +49,8 @@ int main(void){
     //call player movement
     playerMovement(&player);
 
+    enemyMovement(&enemy1, &player);
+
     BeginDrawing();
 
       ClearBackground(RAYWHITE);
@@ -69,14 +72,35 @@ int main(void){
 
 
 void playerMovement(Player *player){
-    
-  if(IsKeyDown(KEY_LEFT) && player->x > 0) player->x -= 4.0f;
-    
-  if(IsKeyDown(KEY_RIGHT) && player->x + player->width < SCREENWIDTH) player->x += 4.0f;
 
-  if(IsKeyDown(KEY_DOWN) && player->y + player->height < SCREENHEIGHT) player->y += 4.0f;
+  float movementSpeed = 4.0f;
+    
+  if(IsKeyDown(KEY_LEFT) && player->x > 0) player->x -= movementSpeed;
+    
+  if(IsKeyDown(KEY_RIGHT) && player->x + player->width < SCREENWIDTH) player->x += movementSpeed;
 
-  if(IsKeyDown(KEY_UP) &&  player->y > 0) player->y -= 4.0f;
+  if(IsKeyDown(KEY_DOWN) && player->y + player->height < SCREENHEIGHT) player->y += movementSpeed;
+
+  if(IsKeyDown(KEY_UP) &&  player->y > 0) player->y -= movementSpeed;
+}
+
+void enemyMovement(Enemy *enemy, Player *player){
+  
+  float movementSpeed = 1.5f;
+  
+  if(enemy->x > player->x){
+    enemy->x -= movementSpeed;
+  }   
+  if(enemy->y > player->y){
+    enemy->y -= movementSpeed;
+  }
+  if(enemy->x < player->x){
+    enemy->x += movementSpeed;
+  }
+  if(enemy->y < player->y){
+    enemy->y += movementSpeed;
+  }
+  
 }
 
 void createPlayerObject(Player *player){
