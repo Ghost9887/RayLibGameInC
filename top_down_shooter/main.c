@@ -70,13 +70,13 @@ int main(void){
 
 void playerMovement(Player *player){
     
-  if(IsKeyDown(KEY_LEFT)) player->x -= 4.0f;
+  if(IsKeyDown(KEY_LEFT) && player->x > 0) player->x -= 4.0f;
     
-  if(IsKeyDown(KEY_RIGHT)) player->x += 4.0f;
+  if(IsKeyDown(KEY_RIGHT) && player->x + player->width < SCREENWIDTH) player->x += 4.0f;
 
-  if(IsKeyDown(KEY_DOWN)) player->y += 4.0f;
+  if(IsKeyDown(KEY_DOWN) && player->y + player->height < SCREENHEIGHT) player->y += 4.0f;
 
-  if(IsKeyDown(KEY_UP)) player->y -= 4.0f;
+  if(IsKeyDown(KEY_UP) &&  player->y > 0) player->y -= 4.0f;
 }
 
 void createPlayerObject(Player *player){
