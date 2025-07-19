@@ -1,10 +1,12 @@
 #include "raylib.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 //GLOBAL VARIABLES
-const unsigned int SCREENWIDTH = 1800;
-const unsigned int SCREENHEIGHT = 1200;
-unsigned int PROJECTILECOUNTER = 0;
+const unsigned int SCREENWIDTH = 1500;
+const unsigned int SCREENHEIGHT = 900;
+const unsigned int TARGETFPS = 60;
+unsigned int MAXPROJECTILES = 200;
 
 typedef struct{
   int x;
@@ -13,6 +15,8 @@ typedef struct{
   int height;
   int health;
   int ammo;
+  float cooldown;
+  float timer;
 }Player;
 
 typedef struct{
@@ -28,6 +32,8 @@ typedef struct{
   int y;
   int damage;
   int speed;
+  bool active;
+  float lifetime;
 }Projectile;
 
 
@@ -42,16 +48,15 @@ void playerShoot(Player *player, Projectile* projectileArrPtr);
 Projectile createProjectile(int posX, int posY);
 void drawProjectile(Projectile *projectile);
 void moveProjectile(Projectile *projectile);
-
+bool canFire(Player *player);
 
 int main(void){
 
   InitWindow(SCREENWIDTH, SCREENHEIGHT, "raylib game");
 
-  SetTargetFPS(60);
+  SetTargetFPS(TARGETFPS);
 
-  //empty projectile array (MAX PROJECTILES AT ONCE IS 1000)
-  Projectile projectileArr[1000];
+  Projectile projectileArr[MAXPROJECTILES];
 
   //create the player
   Player player;
@@ -63,12 +68,14 @@ int main(void){
 
   Enemy enemy2;
   createEnemyObject(&enemy2, 100, 100, 30, 50, 100);
+
   while(!WindowShouldClose()){
 
     //call player movement
     playerMovement(&player);
 
     enemyMovement(&enemy1, &player);
+
     enemyMovement(&enemy2, &player);
 
     BeginDrawing();
@@ -78,14 +85,31 @@ int main(void){
       drawUI(player.health, player.ammo);
 
       drawPlayer(&player);
-      playerShoot(&player, projectileArr);
-      for(int i = 0; i < PROJECTILECOUNTER; i++){
-        moveProjectile(&projectileArr[i]);
-        drawProjectile(&projectileArr[i]);
-      }
-
-
       
+      //if(canFire(&player)){   
+      playerShoot(&player, projectileArr);
+      //}
+
+      //check the projectile array and update the pos of each projectile
+      for(int i = 0; i < MAXPROJECTILES; i++){
+
+        if(projectileArr[i].active){
+
+          moveProjectile(&projectileArr[i]);
+
+          drawProjectile(&projectileArr[i]);
+
+          projectileArr[i].lifetime -= GetFrameTime();
+
+          if(projectileArr[i].lifetime <= 0){
+
+            projectileArr[i].active = false;
+
+          }
+
+        }
+        
+      }
 
       drawEnemy(&enemy1);
       drawEnemy(&enemy2);
@@ -105,6 +129,7 @@ void drawUI(int health, int ammo){
   DrawText(TextFormat("Health: %d", health), 25, 25, 40, BLACK);
   
   DrawText(TextFormat("Ammo: %d", ammo), 25, 80, 40, BLACK);
+
 }
 
 
@@ -154,6 +179,10 @@ void createPlayerObject(Player *player){
   player->health = 100;
 
   player->ammo = 20000;
+
+  player->cooldown = 0.1f;
+
+  player->timer = player->cooldown * (float) TARGETFPS;
 }
 
 void drawPlayer(Player *player){
@@ -182,30 +211,61 @@ void drawEnemy(Enemy *enemy){
 }
 
 void playerShoot(Player *player, Projectile* projectileArr){
+  
+  //find a inactive projectile and replace it
+
+  int indexToReplace;
+
+  for(indexToReplace = 0; indexToReplace < MAXPROJECTILES; indexToReplace++){
+
+    if(!projectileArr[indexToReplace].active){
+
+      break;
+
+    }
+
+  }
 
   if(IsKeyDown(KEY_SPACE)){
-    projectileArr[PROJECTILECOUNTER] = createProjectile(player->x, player->y); 
+
+    projectileArr[indexToReplace] = createProjectile(player->x, player->y); 
+
   }
 
 }
 
 Projectile createProjectile(int posX, int posY){
+
   Projectile projectile;
+
   projectile.x = posX;
+
   projectile.y = posY;
+
   projectile.damage = 100;
+
   projectile.speed = 10;
-  PROJECTILECOUNTER++;
+
+  projectile.active = true;
+
+  projectile.lifetime = 2.0f;
+
   return projectile;
+
 }
 
 void drawProjectile(Projectile *projectile){
+
   DrawCircle(projectile->x, projectile->y, 20, GREEN);
+
 }
 
 void moveProjectile(Projectile *projectile){
+
   projectile->x += projectile->speed;
+
 }
+
 
 
 
