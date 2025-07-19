@@ -13,7 +13,7 @@ struct Player {
   int health;
 };
 
-struct enemy{
+struct Enemy{
   int x;
   int y;
   int width;
@@ -23,8 +23,11 @@ struct enemy{
 
 
 void playerMovement(struct Player *player);
+void createPlayerObject(struct Player *player);
+void drawPlayer(struct Player *player);
+void createEnemyObject(struct Enemy *enemy);
+void drawEnemy(struct Enemy *enemy);
 
-struct Player createPlayerObject();
 
 int main(void){
 
@@ -32,19 +35,29 @@ int main(void){
 
   SetTargetFPS(60);
 
-  struct Player player = createPlayerObject();
+  //create the player
+  struct Player player;
+  createPlayerObject(&player);
+
+  //create a enemy
+  struct Enemy enemy1;
+  createEnemyObject(&enemy1);
 
   while(!WindowShouldClose()){
 
+    //call player movement
     playerMovement(&player);
 
     BeginDrawing();
 
       ClearBackground(RAYWHITE);
 
-      DrawText(TextFormat("Lives: %d", player.health), 50, 50, 20, LIGHTGRAY);
+      DrawText(TextFormat("Health: %d", player.health), 25, 25, 40, LIGHTGRAY);
 
-      DrawRectangle(player.x, player.y, player.width, player.height, BLUE);
+      drawPlayer(&player);
+
+      drawEnemy(&enemy1);
+
 
     EndDrawing();
 
@@ -59,30 +72,50 @@ int main(void){
 
 void playerMovement(struct Player *player){
     
-  if(IsKeyDown(KEY_LEFT)) player->x -= 2.0f;
+  if(IsKeyDown(KEY_LEFT)) player->x -= 4.0f;
     
-  if(IsKeyDown(KEY_RIGHT)) player->x += 2.0f;
+  if(IsKeyDown(KEY_RIGHT)) player->x += 4.0f;
 
-  if(IsKeyDown(KEY_DOWN)) player->y += 2.0f;
+  if(IsKeyDown(KEY_DOWN)) player->y += 4.0f;
 
-  if(IsKeyDown(KEY_UP)) player->y -= 2.0f;
+  if(IsKeyDown(KEY_UP)) player->y -= 4.0f;
 }
 
-struct Player createPlayerObject(){
+void createPlayerObject(struct Player *player){
 
-  struct Player player;
+  player->x = SCREENWIDTH / 2;
 
-  player.x = SCREENWIDTH / 2;
+  player->y = SCREENHEIGHT / 2;
 
-  player.y = SCREENHEIGHT / 2;
+  player->width = 30;
 
-  player.width = 30;
+  player->height = 50;
 
-  player.height = 50;
+  player->health = 100;
+}
 
-  player.health = 100;
+void drawPlayer(struct Player *player){
 
-  return player;
+  DrawRectangle(player->x, player->y, player->width, player->height, BLUE);
+
+}
+
+void createEnemyObject(struct Enemy *enemy){
+  
+  enemy->x = 200;
+  
+  enemy->y = 200;
+
+  enemy->width = 30;
+
+  enemy->height = 30;
+
+  enemy->health = 100;
+}
+
+void drawEnemy(struct Enemy *enemy){
+
+  DrawRectangle(enemy->x, enemy->y, enemy->width, enemy->height, RED);
 
 }
 
