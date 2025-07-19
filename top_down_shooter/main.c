@@ -2,45 +2,45 @@
 #include <stdio.h>
 
 //GLOBAL VARIABLES
-const unsigned int SCREENHEIGHT = 1200;
-const unsigned int SCREENWIDTH = 800;
+const unsigned int SCREENWIDTH = 1200;
+const unsigned int SCREENHEIGHT = 800;
 
-struct Player {
+typedef struct{
   int x;
   int y;
   int width;
   int height;
   int health;
-};
+}Player;
 
-struct Enemy{
+typedef struct{
   int x;
   int y;
   int width;
   int height;
   int health;
-};
+}Enemy;
 
 
-void playerMovement(struct Player *player);
-void createPlayerObject(struct Player *player);
-void drawPlayer(struct Player *player);
-void createEnemyObject(struct Enemy *enemy);
-void drawEnemy(struct Enemy *enemy);
+void playerMovement(Player *player);
+void createPlayerObject(Player *player);
+void drawPlayer(Player *player);
+void createEnemyObject(Enemy *enemy);
+void drawEnemy(Enemy *enemy);
 
 
 int main(void){
 
-  InitWindow(SCREENHEIGHT, SCREENWIDTH, "raylib game");
+  InitWindow(SCREENWIDTH, SCREENHEIGHT, "raylib game");
 
   SetTargetFPS(60);
 
   //create the player
-  struct Player player;
+  Player player;
   createPlayerObject(&player);
 
   //create a enemy
-  struct Enemy enemy1;
+  Enemy enemy1;
   createEnemyObject(&enemy1);
 
   while(!WindowShouldClose()){
@@ -58,9 +58,7 @@ int main(void){
 
       drawEnemy(&enemy1);
 
-
     EndDrawing();
-
   }
 
   CloseWindow();
@@ -70,7 +68,7 @@ int main(void){
 }
 
 
-void playerMovement(struct Player *player){
+void playerMovement(Player *player){
     
   if(IsKeyDown(KEY_LEFT)) player->x -= 4.0f;
     
@@ -81,7 +79,7 @@ void playerMovement(struct Player *player){
   if(IsKeyDown(KEY_UP)) player->y -= 4.0f;
 }
 
-void createPlayerObject(struct Player *player){
+void createPlayerObject(Player *player){
 
   player->x = SCREENWIDTH / 2;
 
@@ -94,13 +92,13 @@ void createPlayerObject(struct Player *player){
   player->health = 100;
 }
 
-void drawPlayer(struct Player *player){
+void drawPlayer(Player *player){
 
   DrawRectangle(player->x, player->y, player->width, player->height, BLUE);
 
 }
 
-void createEnemyObject(struct Enemy *enemy){
+void createEnemyObject(Enemy *enemy){
   
   enemy->x = 200;
   
@@ -113,7 +111,7 @@ void createEnemyObject(struct Enemy *enemy){
   enemy->health = 100;
 }
 
-void drawEnemy(struct Enemy *enemy){
+void drawEnemy(Enemy *enemy){
 
   DrawRectangle(enemy->x, enemy->y, enemy->width, enemy->height, RED);
 
