@@ -29,20 +29,23 @@ void drawProjectile(Projectile *projectile){
  
 }
 
-void moveProjectile(Projectile *projectile){
-
-  projectile->x += projectile->speed;
+void moveProjectile(Projectile *projectile, Enemy *enemy){
+  
+  if(projectile->x < enemy->x) projectile->x += projectile->speed;
+  if(projectile->x > enemy->x) projectile->x -= projectile->speed;
+  if(projectile->y < enemy->y) projectile->y += projectile->speed;
+  if(projectile->y > enemy->y) projectile->y -= projectile->speed;
 
 }
 
-void updateProjectiles(Projectile* projectileArr){
+void updateProjectiles(Projectile* projectileArr, Enemy *enemy){
 
       //check the projectile array and update the pos of each projectile
       for(int i = 0; i < MAXPROJECTILES; i++){
 
         if(projectileArr[i].active){
 
-          moveProjectile(&projectileArr[i]);
+          moveProjectile(&projectileArr[i], enemy);
 
           drawProjectile(&projectileArr[i]);
 

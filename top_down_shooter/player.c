@@ -47,7 +47,7 @@ void playerShoot(Player *player, Projectile* projectileArr){
 
   }
 
-  if(IsKeyDown(KEY_SPACE)){
+  if(player->canShoot){
 
     player->canShoot = false;
 

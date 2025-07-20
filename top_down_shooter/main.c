@@ -55,7 +55,7 @@ int main(void){
         playerShoot(&player, projectileArr);
       }
 
-      updateProjectiles(projectileArr); 
+      updateProjectiles(projectileArr, &enemy1); 
 
       drawEnemy(&enemy1);
       drawEnemy(&enemy2);
