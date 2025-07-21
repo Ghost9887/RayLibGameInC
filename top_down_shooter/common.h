@@ -4,8 +4,8 @@
 #include <stdbool.h>
 
 typedef struct {
-  int x;
-  int y;
+  float x;
+  float y;
   int width;
   int height;
   int health;
@@ -17,8 +17,8 @@ typedef struct {
 
 
 typedef struct{
-  int x;
-  int y;
+  float x;
+  float y;
   int width;
   int height;
   int health;
@@ -26,8 +26,8 @@ typedef struct{
 
 
 typedef struct{
-  int x;
-  int y;
+  float x;
+  float y;
   int damage;
   int speed;
   bool active;

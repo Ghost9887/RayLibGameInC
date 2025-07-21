@@ -10,7 +10,7 @@ void enemyMovement(Enemy *enemy, Player *player){
     float dy = player->y - enemy->y;
 
     float length = sqrtf(dx * dx + dy * dy);
-    if (length < 0.0001f) return;
+    if (length < 0.1f) return;
 
     float dirX = dx / length;
     float dirY = dy / length;
@@ -19,7 +19,7 @@ void enemyMovement(Enemy *enemy, Player *player){
     enemy->y += dirY * movementSpeed;
 }
 
-void createEnemyObject(Enemy *enemy, int posX, int posY, int width, int height, int health){
+void createEnemyObject(Enemy *enemy, float posX, float posY, int width, int height, int health){
   
   enemy->x = posX;
   

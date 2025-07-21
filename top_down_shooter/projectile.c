@@ -4,7 +4,7 @@
 
 extern const unsigned int MAXPROJECTILES;
 
-Projectile createProjectile(int posX, int posY){
+Projectile createProjectile(float posX, float posY){
 
   Projectile projectile;
 
@@ -37,7 +37,7 @@ void moveProjectile(Projectile *projectile, Enemy *enemy) {
 
     // Calculate the length of the vector
     float length = sqrt(dx * dx + dy * dy);
-    if (length < 0.0001f ) return; // Already at target
+    if (length < 1.5f ) destroyProjectile(projectile); // Already at target
 
     // Normalize direction vector
     float dirX = dx / length;
@@ -73,6 +73,10 @@ void updateProjectiles(Projectile* projectileArr, Enemy *enemy){
         
       }
 
+}
+
+void destroyProjectile(Projectile *projectile){
+  projectile->active = false;
 }
 
 

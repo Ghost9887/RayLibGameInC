@@ -27,10 +27,10 @@ int main(void){
 
   //create a enemy
   Enemy enemy1;
-  createEnemyObject(&enemy1, 200, 200, 30, 50, 100);
+  createEnemyObject(&enemy1, 200.0f, 200.0f, 30, 50, 100);
 
   Enemy enemy2;
-  createEnemyObject(&enemy2, 100, 100, 30, 50, 100);
+  createEnemyObject(&enemy2, 100.0f, 100.0f, 30, 50, 100);
 
   while(!WindowShouldClose()){
 

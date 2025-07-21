@@ -8,8 +8,8 @@ extern const unsigned int TARGETFPS;
 extern const unsigned int MAXPROJECTILES;
 
 void createPlayerObject(Player *player){
-  player->x = SCREENWIDTH / 2;
-  player->y = SCREENHEIGHT / 2;
+  player->x = (float) SCREENWIDTH / (float) 2;
+  player->y = (float) SCREENHEIGHT / (float) 2;
   player->width = 30;
   player->height = 50;
   player->health = 100;
