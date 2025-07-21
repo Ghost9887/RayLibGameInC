@@ -19,17 +19,20 @@ void enemyMovement(Enemy *enemy, Player *player){
     enemy->y += dirY * movementSpeed;
 }
 
-void createEnemyObject(Enemy *enemy, float posX, float posY, int width, int height, int health){
+Enemy createEnemyObject(float posX, float posY){
+  Enemy enemy;
+
+  enemy.x = posX;
   
-  enemy->x = posX;
-  
-  enemy->y = posY;
+  enemy.y = posY;
 
-  enemy->width = width;
+  enemy.width = 30;
 
-  enemy->height = height;
+  enemy.height = 50;
 
-  enemy->health = health;
+  enemy.health = 100;
+
+  return enemy;
 }
 
 void drawEnemy(Enemy *enemy){

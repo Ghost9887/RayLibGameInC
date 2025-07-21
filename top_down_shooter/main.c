@@ -25,15 +25,11 @@ int main(void){
   initArray(projectileArr);
 
   //create the player
-  Player player;
-  createPlayerObject(&player);
+  Player player = createPlayerObject();
 
   //create a enemy
-  Enemy enemy1;
-  createEnemyObject(&enemy1, 200.0f, 200.0f, 30, 50, 100);
-
-  Enemy enemy2;
-  createEnemyObject(&enemy2, 100.0f, 100.0f, 30, 50, 100);
+  Enemy enemy1 = createEnemyObject(200.0f, 200.0f);
+  Enemy enemy2 = createEnemyObject(100.0f, 100.0f);
 
   while(!WindowShouldClose()){
 

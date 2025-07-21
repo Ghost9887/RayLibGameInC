@@ -5,7 +5,7 @@
 #include "common.h"
 
 void enemyMovement(Enemy *enemy, Player *player);
-void createEnemyObject(Enemy *enemy, float posX, float posY, int width, int height, int health);
+Enemy createEnemyObject(float posX, float posY);
 void drawEnemy(Enemy *enemy);
 
 #endif

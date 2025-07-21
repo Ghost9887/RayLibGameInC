@@ -5,7 +5,7 @@
 #include "raylib.h"
 #include <stdbool.h>
 
-void createPlayerObject(Player *player);
+Player createPlayerObject();
 void drawPlayer(Player *player);
 void playerMovement(Player *player);
 void checkIfPlayerCanShoot(Player *player);
