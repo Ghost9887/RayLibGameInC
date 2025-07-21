@@ -1,8 +1,10 @@
 #include "raylib.h"
 #include "projectile.h"
 #include <math.h>
+#include <stdio.h>
 
-extern const unsigned int MAXPROJECTILES;
+extern int MAXPROJECTILES;
+extern unsigned int PROJECTILECOUNT;
 
 Projectile createProjectile(float posX, float posY){
 
@@ -14,11 +16,13 @@ Projectile createProjectile(float posX, float posY){
 
   projectile.damage = 100;
 
-  projectile.speed = 4;
+  projectile.speed = 8;
 
   projectile.active = true;
 
   projectile.lifetime = 5.0f;
+
+  PROJECTILECOUNT++;
 
   return projectile;
 
@@ -26,8 +30,8 @@ Projectile createProjectile(float posX, float posY){
 
 void drawProjectile(Projectile *projectile){
 
-  DrawCircle(projectile->x, projectile->y, 20, GREEN);
- 
+  DrawCircle(projectile->x, projectile->y, 20, BLACK);
+
 }
 
 void moveProjectile(Projectile *projectile, Enemy *enemy) {
@@ -37,7 +41,7 @@ void moveProjectile(Projectile *projectile, Enemy *enemy) {
 
     // Calculate the length of the vector
     float length = sqrt(dx * dx + dy * dy);
-    if (length < 1.5f ) destroyProjectile(projectile); // Already at target
+    if (length < 3.0f ) destroyProjectile(projectile); // Already at target
 
     // Normalize direction vector
     float dirX = dx / length;
@@ -49,14 +53,12 @@ void moveProjectile(Projectile *projectile, Enemy *enemy) {
 }
 
 
-
 void updateProjectiles(Projectile* projectileArr, Enemy *enemy){
-
       //check the projectile array and update the pos of each projectile
       for(int i = 0; i < MAXPROJECTILES; i++){
 
         if(projectileArr[i].active){
-
+          
           moveProjectile(&projectileArr[i], enemy);
 
           drawProjectile(&projectileArr[i]);
@@ -77,6 +79,19 @@ void updateProjectiles(Projectile* projectileArr, Enemy *enemy){
 
 void destroyProjectile(Projectile *projectile){
   projectile->active = false;
+  PROJECTILECOUNT--;
+}
+
+void initArray(Projectile* projectileArr){
+  //initialize the projectile array
+  for (int i = 0; i < MAXPROJECTILES; i++) {
+    projectileArr[i].active = false;
+    projectileArr[i].lifetime = 0.0f;
+    projectileArr[i].speed = 0.0f;
+    projectileArr[i].damage = 0;
+    projectileArr[i].x = 0;
+    projectileArr[i].y = 0;
+  }
 }
 
 

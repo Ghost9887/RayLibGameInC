@@ -5,7 +5,7 @@
 extern const unsigned int SCREENWIDTH;
 extern const unsigned int SCREENHEIGHT;
 extern const unsigned int TARGETFPS;
-extern const unsigned int MAXPROJECTILES;
+extern int MAXPROJECTILES;
 
 void createPlayerObject(Player *player){
   player->x = (float) SCREENWIDTH / (float) 2;
@@ -14,9 +14,9 @@ void createPlayerObject(Player *player){
   player->height = 50;
   player->health = 100;
   player->ammo = 2000;
-  player->cooldown = 0.5f;
+  player->cooldown = 0.4f;
   player->timer = player->cooldown * (float) TARGETFPS;
-  player->canShoot = true;
+  player->canShoot = false;
 }
 
 void drawPlayer(Player *player){

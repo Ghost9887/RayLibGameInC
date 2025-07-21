@@ -8,5 +8,6 @@ void drawProjectile(Projectile *projectile);
 void moveProjectile(Projectile *projectile, Enemy *enemy);
 void updateProjectiles(Projectile* projectileArr, Enemy *enemy);
 void destroyProjectile(Projectile *projectile);
+void initArray(Projectile* projectileArr);
 
 #endif

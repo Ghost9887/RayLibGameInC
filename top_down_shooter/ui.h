@@ -3,6 +3,6 @@
 
 #include "raylib.h"
 
-void drawUI(int health, int ammo);
+void drawUI(int health, int ammo, int projectileCount, int maxProjectiles);
 
 #endif

@@ -4,7 +4,7 @@
 #include <math.h>
 
 void enemyMovement(Enemy *enemy, Player *player){
-    const int movementSpeed = 2;
+    const float movementSpeed = 1.5f;
 
     float dx = player->x - enemy->x;
     float dy = player->y - enemy->y;

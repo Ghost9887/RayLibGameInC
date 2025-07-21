@@ -10,7 +10,8 @@
 const unsigned int SCREENWIDTH = 1200;
 const unsigned int SCREENHEIGHT = 800; 
 const unsigned int TARGETFPS = 60;
-const unsigned int MAXPROJECTILES = 200;
+int MAXPROJECTILES = 100;
+int PROJECTILECOUNT = 0;
 
 
 int main(void){
@@ -20,6 +21,8 @@ int main(void){
   SetTargetFPS(TARGETFPS);
 
   Projectile projectileArr[MAXPROJECTILES];
+  
+  initArray(projectileArr);
 
   //create the player
   Player player;
@@ -45,9 +48,11 @@ int main(void){
 
       ClearBackground(RAYWHITE);
 
-      drawUI(player.health, player.ammo);
+      drawUI(player.health, player.ammo, PROJECTILECOUNT, MAXPROJECTILES);
 
       drawPlayer(&player);
+      drawEnemy(&enemy1);
+      drawEnemy(&enemy2);
       
       checkIfPlayerCanShoot(&player);
 
@@ -56,10 +61,6 @@ int main(void){
       }
 
       updateProjectiles(projectileArr, &enemy1); 
-
-      drawEnemy(&enemy1);
-      drawEnemy(&enemy2);
-
 
     EndDrawing();
   }
