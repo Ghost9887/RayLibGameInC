@@ -7,8 +7,8 @@
 #include <stdbool.h>
 
 //GLOBAL VARIABLES
-const unsigned int SCREENWIDTH = 1500;
-const unsigned int SCREENHEIGHT = 900;
+const unsigned int SCREENWIDTH = 1200;
+const unsigned int SCREENHEIGHT = 800; 
 const unsigned int TARGETFPS = 60;
 const unsigned int MAXPROJECTILES = 200;
 

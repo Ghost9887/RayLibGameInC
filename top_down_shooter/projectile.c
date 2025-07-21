@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "projectile.h"
+#include <math.h>
 
 extern const unsigned int MAXPROJECTILES;
 
@@ -29,14 +30,25 @@ void drawProjectile(Projectile *projectile){
  
 }
 
-void moveProjectile(Projectile *projectile, Enemy *enemy){
-  
-  if(projectile->x < enemy->x) projectile->x += projectile->speed;
-  if(projectile->x > enemy->x) projectile->x -= projectile->speed;
-  if(projectile->y < enemy->y) projectile->y += projectile->speed;
-  if(projectile->y > enemy->y) projectile->y -= projectile->speed;
+void moveProjectile(Projectile *projectile, Enemy *enemy) {
+    // Calculate direction vector to enemy
+    float dx = enemy->x - projectile->x;
+    float dy = enemy->y - projectile->y;
 
+    // Calculate the length of the vector
+    float length = sqrt(dx * dx + dy * dy);
+    if (length == 0) return; // Already at target
+
+    // Normalize direction vector
+    float dirX = dx / length;
+    float dirY = dy / length;
+
+    // Move projectile along direction
+    projectile->x += dirX * projectile->speed;
+    projectile->y += dirY * projectile->speed;
 }
+
+
 
 void updateProjectiles(Projectile* projectileArr, Enemy *enemy){
 
