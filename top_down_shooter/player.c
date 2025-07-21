@@ -14,10 +14,10 @@ Player createPlayerObject(){
   player.width = 30;
   player.height = 50;
   player.health = 100;
-  player.ammo = 2000;
   player.cooldown = 0.4f;
   player.timer = player.cooldown * (float) TARGETFPS;
   player.canShoot = false;
+  player.invTime = 0.0f;
   return player;
 }
 
@@ -69,4 +69,30 @@ void checkIfPlayerCanShoot(Player *player) {
         player->canShoot = true;
     }
 }
+
+void playerLoseHealth(Enemy *enemy, Player *player){
+    if (!isPlayerInvulnerable(player)) {
+        player->health -= enemy->damage;
+        player->invTime += 3.0f;
+    }
+}
+
+void invTimer(Player *player){
+  if(player->invTime > 0.0f){
+  player->invTime -= GetFrameTime();
+  }else{
+    player->invTime = 0.0f;
+  }
+}
+
+
+bool isPlayerInvulnerable(Player *player){
+    if (player->invTime > 0.0f) {
+        return true;
+    }
+    return false;
+}
+
+
+
 

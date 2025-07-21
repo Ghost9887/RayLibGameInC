@@ -2,7 +2,8 @@
 #define UI_H
 
 #include "raylib.h"
+#include "common.h"
 
-void drawUI(int health, int ammo, int projectileCount, int maxProjectiles);
+void drawUI(int health, int enemyCounter, float invTimer);
 
 #endif

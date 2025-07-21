@@ -9,5 +9,6 @@ void moveProjectile(Projectile *projectile, Enemy *enemy);
 void updateProjectiles(Projectile* projectileArr, Enemy *enemy);
 void destroyProjectile(Projectile *projectile);
 void initProjectileArray(Projectile* projectileArr);
+bool checkForCollisionWithEnemy(Projectile *projectile, Enemy *enemy);
 
 #endif

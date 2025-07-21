@@ -5,15 +5,16 @@
 #include "ui.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 
 //GLOBAL VARIABLES
 const unsigned int SCREENWIDTH = 1200;
 const unsigned int SCREENHEIGHT = 800; 
 const unsigned int TARGETFPS = 60;
-int MAXPROJECTILES = 100;
-int PROJECTILECOUNT = 0;
 const unsigned int MAXENEMIES = 100;
-
+const unsigned int MAXPROJECTILES = 200;
+unsigned int ENEMYCOUNTER = 0;
 
 int main(void){
 
@@ -32,20 +33,21 @@ int main(void){
   //create the player
   Player player = createPlayerObject();
 
-  //create a enemy
-  enemyArr[0] = createEnemyObject(200.0f, 200.0f);
-  enemyArr[1] = createEnemyObject(100.0f, 100.0f);
-
+  
   while(!WindowShouldClose()){
 
-    //call player movement
+      //call player movement
     playerMovement(&player);
 
     BeginDrawing();
 
       ClearBackground(RAYWHITE);
 
-      drawUI(player.health, player.ammo, PROJECTILECOUNT, MAXPROJECTILES);
+      drawUI(player.health, ENEMYCOUNTER, player.invTime);
+
+      
+      //keeps track of the invincibility timer
+      invTimer(&player);
 
       drawPlayer(&player);
       
@@ -53,9 +55,22 @@ int main(void){
 
       if(player.canShoot){   
         playerShoot(&player, projectileArr);
+          
+        //TEST CREATING ENEMIES
+           int indexToReplace;
+        for(indexToReplace = 0; indexToReplace < MAXENEMIES; indexToReplace++){
+            if(!enemyArr[indexToReplace].active){
+              break;
+            }
+        }
+        srand(time(0));
+        float randomX = rand() % SCREENWIDTH;
+        float randomY = rand() % SCREENHEIGHT;
+        enemyArr[indexToReplace] = createEnemyObject(randomX, randomY);
+        ENEMYCOUNTER++;
       }
 
-      updateProjectiles(projectileArr, &enemyArr[0]); 
+      updateProjectiles(projectileArr, findClosestEnemyToPlayer(enemyArr, &player)); 
 
       updateEnemy(enemyArr, &player);
 

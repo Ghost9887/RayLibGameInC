@@ -9,10 +9,10 @@ typedef struct {
   int width;
   int height;
   int health;
-  int ammo;
   float cooldown;
   float timer;
   bool canShoot;
+  float invTime;
 }Player;
 
 
@@ -22,8 +22,8 @@ typedef struct{
   int width;
   int height;
   int health;
+  int damage;
   bool active;
-  float lifetime;
 }Enemy;
 
 
@@ -34,7 +34,7 @@ typedef struct{
   int speed;
   bool active;
   float lifetime;
+  float size;
 }Projectile;
-
 
 #endif
