@@ -14,11 +14,11 @@ Projectile createProjectile(int posX, int posY){
 
   projectile.damage = 100;
 
-  projectile.speed = 10;
+  projectile.speed = 4;
 
   projectile.active = true;
 
-  projectile.lifetime = 2.0f;
+  projectile.lifetime = 5.0f;
 
   return projectile;
 
@@ -37,7 +37,7 @@ void moveProjectile(Projectile *projectile, Enemy *enemy) {
 
     // Calculate the length of the vector
     float length = sqrt(dx * dx + dy * dy);
-    if (length == 0) return; // Already at target
+    if (length < 0.0001f ) return; // Already at target
 
     // Normalize direction vector
     float dirX = dx / length;

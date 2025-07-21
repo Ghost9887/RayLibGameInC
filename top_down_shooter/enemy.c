@@ -1,24 +1,22 @@
 #include "enemy.h"
 #include "raylib.h"
 #include "player.h"
+#include <math.h>
 
 void enemyMovement(Enemy *enemy, Player *player){
-  
-  float movementSpeed = 2.0f;
-  
-  if(enemy->x > player->x){
-    enemy->x -= movementSpeed;
-  }   
-  if(enemy->y > player->y){
-    enemy->y -= movementSpeed;
-  }
-  if(enemy->x < player->x){
-    enemy->x += movementSpeed;
-  }
-  if(enemy->y < player->y){
-    enemy->y += movementSpeed;
-  }
-  
+    const int movementSpeed = 2;
+
+    float dx = player->x - enemy->x;
+    float dy = player->y - enemy->y;
+
+    float length = sqrtf(dx * dx + dy * dy);
+    if (length < 0.0001f) return;
+
+    float dirX = dx / length;
+    float dirY = dy / length;
+
+    enemy->x += dirX * movementSpeed;
+    enemy->y += dirY * movementSpeed;
 }
 
 void createEnemyObject(Enemy *enemy, int posX, int posY, int width, int height, int health){
