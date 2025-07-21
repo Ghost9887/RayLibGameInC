@@ -82,7 +82,7 @@ void destroyProjectile(Projectile *projectile){
   PROJECTILECOUNT--;
 }
 
-void initArray(Projectile* projectileArr){
+void initProjectileArray(Projectile* projectileArr){
   //initialize the projectile array
   for (int i = 0; i < MAXPROJECTILES; i++) {
     projectileArr[i].active = false;

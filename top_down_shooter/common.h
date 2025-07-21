@@ -22,6 +22,8 @@ typedef struct{
   int width;
   int height;
   int health;
+  bool active;
+  float lifetime;
 }Enemy;
 
 
