@@ -15,7 +15,7 @@ float calculateDistance(Enemy *enemy, Player *player);
 void destroyEnemy(Enemy *enemy);
 void checkHealth(Enemy *enemy);
 bool checkCollisionWithPlayer(Enemy *enemy, Player *player);
-void createEnemies();
+void createEnemies(Enemy* enemArr, int enemyCount);
 bool checkIfAllEnemiesAreDestroyed(Enemy* enemy);
 
 #endif
