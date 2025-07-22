@@ -4,6 +4,7 @@
 #include "projectile.h"
 #include "ui.h"
 #include "levelSystem.h"
+#include "coins.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -17,71 +18,35 @@ const unsigned int MAXPROJECTILES = 200;
 const unsigned int MAXENEMIES = 200;
 unsigned int ENEMYCOUNTER = 0;
 
+void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Level *lvl, Coins *coins);
+
 int main(void){
 
   InitWindow(SCREENWIDTH, SCREENHEIGHT, "raylib game");
 
   SetTargetFPS(TARGETFPS);
 
+  //creating all objects for the game
   Projectile projectileArr[MAXPROJECTILES];
-
   initProjectileArray(projectileArr);
-
   Enemy enemyArr[MAXENEMIES];
-
   initEnemyArr(enemyArr);
-  
   Level lvl = createLevel();
-
-  createEnemies(enemyArr, getAmountOfEnemies(&lvl));
-  //create the player
+  Coins coins = createCoins();
   Player player = createPlayerObject();
 
-  
-  while(!WindowShouldClose()){
+  //creating the first wave of enemies manually
+  createEnemies(enemyArr, getAmountOfEnemies(&lvl));
 
-      //call player movement
-    playerMovement(&player);
+  //MAIN GAME LOOP 
+  while(!WindowShouldClose()){
 
     BeginDrawing();
 
       ClearBackground(RAYWHITE);
 
-      drawUI(player.health, ENEMYCOUNTER, player.invTime, lvl.level);
-
-      //REFACTOR INTO FUNCTIONS    
-      if(lvl.inBreak){
-      lvl.breakTimer -= GetFrameTime();
-      showBreakUI(lvl.breakTimer);
-      if(lvl.breakTimer <= 0){
-        lvl.inBreak = false;
-        startLevel(&lvl, enemyArr);
-      }
-      }
-
-      //keeps track of the invincibility timer
-      invTimer(&player);
-
-      drawPlayer(&player);
-      
-      checkIfPlayerCanShoot(&player);
-
-
-      //REFACTOR INTO FUNCTIONS
-      if(!lvl.inBreak){
-        //check if the enemies are dead
-        bool completed = checkIfAllEnemiesAreDestroyed(enemyArr);
-        endLevel(completed, &lvl, enemyArr);
-        
-        Enemy *enemy = findClosestEnemyToPlayer(enemyArr, &player);
-        if(enemy != NULL){
-        if(player.canShoot){   
-          playerShoot(&player, projectileArr);
-        }
-        updateProjectiles(projectileArr, enemy); 
-      }
-        updateEnemy(enemyArr, &player);
-      }
+      //UPDATE ALL OF THE GAME STATES
+      updateGameState(&player, enemyArr, projectileArr, &lvl, &coins);
 
     EndDrawing();
   }
@@ -92,4 +57,31 @@ int main(void){
 
 }
 
+void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Level *lvl, Coins *coins){
+    
+    updatePlayer(player);
+
+    //checks if the round should end
+    updateBreak(lvl, enemyArr);
+    
+    //drawing
+    drawUI(player->health, ENEMYCOUNTER, player->invTime, lvl->level, getCoins(coins));
+
+    //only do these if there are enemies or the round hasn't ended yet
+    if(!inBreak(lvl)){
+    //check if the enemies are dead
+    bool completed = checkIfAllEnemiesAreDestroyed(enemyArr);
+    endLevel(completed, lvl, enemyArr);
+
+    //check if the player has anything to shoot at
+    Enemy *enemy = findClosestEnemyToPlayer(enemyArr, player, coins);
+    if(enemy != NULL){
+      if(checkIfPlayerCanShoot(player)){   
+        playerShoot(player, projectileArr);
+      }
+      updateProjectiles(projectileArr, enemy, coins); 
+    }
+      updateEnemy(enemyArr, player);
+    }
+}
 

@@ -35,40 +35,28 @@ void playerMovement(Player *player){
 }
 
 void playerShoot(Player *player, Projectile* projectileArr){
-  
-  //find a inactive projectile and replace it
-
   int indexToReplace;
-
   for(indexToReplace = 0; indexToReplace < MAXPROJECTILES; indexToReplace++){
-
     if(!projectileArr[indexToReplace].active){
-
       break;
-
     }
-
   }
-
-  if(player->canShoot){
-
+  if(checkIfPlayerCanShoot(player)){
     player->canShoot = false;
-
     player->timer = player->cooldown * (float) TARGETFPS;
-
     projectileArr[indexToReplace] = createProjectile(player->x, player->y); 
-
   }
-
 }
 
-void checkIfPlayerCanShoot(Player *player) {
+bool checkIfPlayerCanShoot(Player *player) {
     if (!player->canShoot && player->timer > 0) {
         player->timer--;
+        return false;
     }
     if (player->timer <= 0) {
         player->canShoot = true;
     }
+  return true;
 }
 
 void playerLoseHealth(Enemy *enemy, Player *player){
@@ -92,6 +80,12 @@ bool isPlayerInvulnerable(Player *player){
         return true;
     }
     return false;
+}
+
+void updatePlayer(Player *player){
+  playerMovement(player);
+  drawPlayer(player);
+  invTimer(player);
 }
 
 

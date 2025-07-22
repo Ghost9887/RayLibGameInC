@@ -44,4 +44,8 @@ typedef struct{
   float breakTimer;
 }Level;
 
+typedef struct{
+  int coinCounter;
+}Coins;
+
 #endif

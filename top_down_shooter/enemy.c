@@ -1,6 +1,7 @@
 #include "enemy.h"
 #include "raylib.h"
 #include "player.h"
+#include "coins.h"
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
@@ -64,22 +65,20 @@ void initEnemyArr(Enemy* enemyArr){
 }
 
 //MAYBE MOVE TO PLAYER FILE ???
-Enemy *findClosestEnemyToPlayer(Enemy* enemyArr, Player *player){
+Enemy *findClosestEnemyToPlayer(Enemy* enemyArr, Player *player, Coins *coins){
   int indexOfEnemy;
   float minDistance = 100000.0f;
   for(int i = 0; i < MAXENEMIES; i++){
     float temp = minDistance;
     if(enemyArr[i].active){
-      checkHealth(&enemyArr[i]);
+      checkHealth(&enemyArr[i], coins);
       minDistance = fabs(fmin(calculateDistance(&enemyArr[i], player), minDistance));
     }
     if(temp != minDistance){
       indexOfEnemy = i;
     }
   } 
-
   //checks if the player can shoot or not
-  //REFACTOR INTO A FUNCTION
   if(minDistance < player->range){
   return &enemyArr[indexOfEnemy];
   }
@@ -92,13 +91,14 @@ float calculateDistance(Enemy *enemy, Player *player){
   return sqrtf(dx * dx + dy * dy);
 }
 
-void checkHealth(Enemy *enemy){
-  if(enemy->health <= 0) destroyEnemy(enemy);
+void checkHealth(Enemy *enemy, Coins *coins){
+  if(enemy->health <= 0) destroyEnemy(enemy, coins);
 }
 
-void destroyEnemy(Enemy *enemy){
+void destroyEnemy(Enemy *enemy, Coins *coins){
   enemy->active = false;
   ENEMYCOUNTER--;
+  addCoins(50, coins);
 }
 
 bool checkCollisionWithPlayer(Enemy *enemy, Player *player){
@@ -106,17 +106,15 @@ bool checkCollisionWithPlayer(Enemy *enemy, Player *player){
     Rectangle enemyRect = { enemy->x, enemy->y, enemy->width, enemy->height };
     Rectangle playerRect = {player->x, player->y, player->width, player->height};
     return CheckCollisionRecs(enemyRect, playerRect);
- 
 }
 
-
+//spawns the enemies
 void createEnemies(Enemy* enemyArr, int enemyCount){
     static bool seeded = false;
     if (!seeded) {
         srand(time(NULL));
         seeded = true;
     }
-
     for (int i = 0; i < enemyCount; i++) {
         if (!enemyArr[i].active) {
             float randomX = SCREENWIDTH / 2 + rand() % SCREENWIDTH;
@@ -132,6 +130,10 @@ bool checkIfAllEnemiesAreDestroyed(Enemy* enemy){
     return true;
   }
   return false;
+}
+
+void enemyLoseHealth(int damage, Enemy *enemy){
+  enemy->health -= damage;
 }
 
 

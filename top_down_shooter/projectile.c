@@ -1,5 +1,7 @@
 #include "raylib.h"
 #include "projectile.h"
+#include "coins.h"
+#include "enemy.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -12,7 +14,7 @@ Projectile createProjectile(float posX, float posY){
   projectile.damage = 100;
   projectile.speed = 30;
   projectile.active = true;
-  projectile.lifetime = 5.0f;
+  projectile.lifetime = 10.0f;
   projectile.size = 5.0f;
   return projectile;
 }
@@ -32,12 +34,14 @@ void moveProjectile(Projectile *projectile, Enemy *enemy) {
 }
 
 
-void updateProjectiles(Projectile* projectileArr, Enemy *enemy){
+void updateProjectiles(Projectile* projectileArr, Enemy *enemy, Coins *coins){
       for(int i = 0; i < MAXPROJECTILES; i++){
        if(projectileArr[i].active){
-          if(checkForCollisionWithEnemy(&projectileArr[i], enemy)){ 
+          if(checkForCollisionWithEnemy(&projectileArr[i], enemy, coins)){ 
             destroyProjectile(&projectileArr[i]);
-            enemy->health -= 50;
+            addCoins(20, coins);
+            //MAKE THIS A FUNCTION
+            enemyLoseHealth(50, enemy);
           }
           moveProjectile(&projectileArr[i], enemy);
           drawProjectile(&projectileArr[i]);
@@ -65,7 +69,7 @@ void initProjectileArray(Projectile* projectileArr){
   }
 }
 
-bool checkForCollisionWithEnemy(Projectile *projectile, Enemy *enemy){
+bool checkForCollisionWithEnemy(Projectile *projectile, Enemy *enemy, Coins *coins){
     //create the enemy rectangle from its data
     Rectangle enemyRect = { enemy->x, enemy->y, enemy->width, enemy->height };
     return CheckCollisionCircleRec(

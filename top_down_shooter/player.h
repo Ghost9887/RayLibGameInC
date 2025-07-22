@@ -8,10 +8,11 @@
 Player createPlayerObject();
 void drawPlayer(Player *player);
 void playerMovement(Player *player);
-void checkIfPlayerCanShoot(Player *player);
+bool checkIfPlayerCanShoot(Player *player);
 void playerShoot(Player *player, Projectile* projectileArr);
 void playerLoseHealth(Enemy *enemy, Player *player);
 bool isPlayerInvulnerable(Player *player);
 void invTimer(Player *player);
+void updatePlayer(Player *player);
 
 #endif
