@@ -15,8 +15,10 @@ const unsigned int SCREENWIDTH = 1200;
 const unsigned int SCREENHEIGHT = 800; 
 const unsigned int TARGETFPS = 60;
 const unsigned int MAXPROJECTILES = 200;
-const unsigned int MAXENEMIES = 200;
+const unsigned int MAXENEMIES = 500;
+const unsigned int MAXSPAWNENEMIES = 40;
 unsigned int ENEMYCOUNTER = 0;
+unsigned int CURRENTSPAWNEDENEMIES = 0;
 
 void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Level *lvl, Coins *coins);
 
@@ -34,9 +36,9 @@ int main(void){
   Level lvl = createLevel();
   Coins coins = createCoins();
   Player player = createPlayerObject();
-
-  //creating the first wave of enemies manually
-  createEnemies(enemyArr, getAmountOfEnemies(&lvl));
+  
+  //start the first round
+  startLevel(&lvl, enemyArr);
 
   //MAIN GAME LOOP 
   while(!WindowShouldClose()){
@@ -65,7 +67,7 @@ void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr,
     updateBreak(lvl, enemyArr);
     
     //drawing
-    drawUI(player->health, ENEMYCOUNTER, player->invTime, lvl->level, getCoins(coins));
+    drawUI(player->health, ENEMYCOUNTER, player->invTime, lvl->level, getCoins(coins), CURRENTSPAWNEDENEMIES);
 
     //only do these if there are enemies or the round hasn't ended yet
     if(!inBreak(lvl)){
@@ -73,6 +75,10 @@ void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr,
       endLevel(checkIfAllEnemiesAreDestroyed(enemyArr), lvl, enemyArr);
       //check if the player has anything to shoot at if so create the projectile with the target of the indexOfEnemy
       int indexOfEnemy = findClosestEnemyToPlayer(enemyArr, player, coins);
+      //only call this if there are more enemies that need to be spawned druring the round
+      if(MAXSPAWNENEMIES <= ENEMYCOUNTER){
+        createEnemies(enemyArr, getAmountOfEnemies(lvl));
+      }
       //check if the closes enemy is in range of shooting
       if(indexOfEnemy != -2 && checkIfPlayerCanShoot(player)){
         playerShoot(player, projectileArr, indexOfEnemy, coins);

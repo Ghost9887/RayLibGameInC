@@ -41,7 +41,7 @@ void updateProjectiles(Projectile* projectileArr, Enemy* enemyArr, Coins *coins)
           if(checkForCollisionWithEnemy(&projectileArr[i], &enemyArr[projectileArr[i].target], coins)){ 
             destroyProjectile(&projectileArr[i]);
             addCoins(20, coins);
-            enemyLoseHealth(50, &enemyArr[projectileArr[i].target]);
+            enemyLoseHealth(projectileArr[i].damage, &enemyArr[projectileArr[i].target]);
           }
           moveProjectile(&projectileArr[i], &enemyArr[projectileArr[i].target]);
           drawProjectile(&projectileArr[i]);

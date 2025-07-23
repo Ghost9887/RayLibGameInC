@@ -14,7 +14,7 @@ Player createPlayerObject(){
   player.width = 30;
   player.height = 50;
   player.health = 100;
-  player.cooldown = 0.5f;
+  player.cooldown = 0.3f;
   player.timer = player.cooldown * (float) TARGETFPS;
   player.canShoot = false;
   player.invTime = 0.0f;

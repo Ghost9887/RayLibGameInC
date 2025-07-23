@@ -3,9 +3,11 @@
 #include "ui.h"
 #include "levelSystem.h"
 
+extern unsigned int ENEMYCOUNTER;
+
 Level createLevel(){
   Level lvl;
-  lvl.level = 1;
+  lvl.level = 0;
   lvl.breakTimer = 0.0f;
   lvl.inBreak = false;
   return lvl;
@@ -37,14 +39,16 @@ void changeBreak(bool value, Level *lvl){
 
 void startLevel(Level *lvl, Enemy* enemyArr){
   lvl->level = getLevel(lvl) + 1; 
-  getAmountOfEnemies(lvl);
+  changeBreak(false, lvl);
+  ENEMYCOUNTER = getAmountOfEnemies(lvl);
+  //spawns the enemies at the start of the round
   createEnemies(enemyArr, getAmountOfEnemies(lvl));
 }
 
 void endLevel(bool completed, Level *lvl, Enemy* enemyArr){
   if(completed){
     lvl->inBreak = true;
-    lvl->breakTimer = 20.0f;
+    lvl->breakTimer = 2.0f;
   }
 }
 
@@ -53,7 +57,6 @@ void updateBreak(Level *lvl, Enemy* enemyArr){
     reduceBreakTimer(lvl);
     showBreakUI(getBreakTimer(lvl));
     if(getBreakTimer(lvl) <= 0){
-      changeBreak(false, lvl);
       startLevel(lvl, enemyArr);
     }
   }

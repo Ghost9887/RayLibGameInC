@@ -10,6 +10,8 @@ extern unsigned int MAXENEMIES;
 extern unsigned int ENEMYCOUNTER;
 extern const unsigned int SCREENWIDTH;
 extern const unsigned int SCREENHEIGHT;
+extern const unsigned int MAXSPAWNENEMIES;
+extern unsigned int CURRENTSPAWNEDENEMIES;
 
 void enemyMovement(Enemy *enemy, Player *player){
     const float movementSpeed = 1.5f;
@@ -40,16 +42,15 @@ void drawEnemy(Enemy *enemy){
 }
 
 void updateEnemy(Enemy* enemyArr, Player *player){
-      for(int i = 0; i < MAXENEMIES; i++){
-        if(enemyArr[i].active){
-          enemyMovement(&enemyArr[i], player);
-          drawEnemy(&enemyArr[i]);
-        if (!isPlayerInvulnerable(player) && checkCollisionWithPlayer(&enemyArr[i], player)) {
-          playerLoseHealth(&enemyArr[i], player);   
-        }
-
-        }
+    for(int i = 0; i < MAXSPAWNENEMIES; i++){
+      if(!enemyArr[i].active) continue;
+      enemyMovement(&enemyArr[i], player);
+      drawEnemy(&enemyArr[i]);
+      if (!isPlayerInvulnerable(player) && checkCollisionWithPlayer(&enemyArr[i], player)) {
+        playerLoseHealth(&enemyArr[i], player);   
       }
+
+    }
 }
 
 void initEnemyArr(Enemy* enemyArr){
@@ -68,7 +69,7 @@ void initEnemyArr(Enemy* enemyArr){
 int findClosestEnemyToPlayer(Enemy* enemyArr, Player *player, Coins *coins){
   int indexOfEnemy;
   float minDistance = 100000.0f;
-  for(int i = 0; i < MAXENEMIES; i++){
+  for(int i = 0; i < MAXSPAWNENEMIES; i++){
     if(!enemyArr[i].active) continue;
     float temp = minDistance;
     checkHealth(&enemyArr[i], coins);
@@ -97,6 +98,7 @@ void checkHealth(Enemy *enemy, Coins *coins){
 void destroyEnemy(Enemy *enemy, Coins *coins){
   enemy->active = false;
   ENEMYCOUNTER--;
+  CURRENTSPAWNEDENEMIES--;
   addCoins(50, coins);
 }
 
@@ -114,13 +116,23 @@ void createEnemies(Enemy* enemyArr, int enemyCount){
         srand(time(NULL));
         seeded = true;
     }
-    for (int i = 0; i < enemyCount; i++) {
-        if (!enemyArr[i].active) {
-            float randomX = SCREENWIDTH / 2 + rand() % SCREENWIDTH;
-            float randomY = SCREENHEIGHT / 2 + rand() % SCREENHEIGHT;
-            enemyArr[i] = createEnemyObject(randomX, randomY);
-            ENEMYCOUNTER++;
+    //if there are less enemies we dont have to check if there is a available slot
+    if(enemyCount <= MAXSPAWNENEMIES){
+      for (int i = 0; i < enemyCount; i++) {
+          float randomX = SCREENWIDTH / 2 + rand() % SCREENWIDTH;
+          float randomY = SCREENHEIGHT / 2 + rand() % SCREENHEIGHT;
+          enemyArr[i] = createEnemyObject(randomX, randomY);
+          CURRENTSPAWNEDENEMIES++;
+      }
+    }else{
+      for(int i = 0; i < MAXSPAWNENEMIES; i++){
+        if(!enemyArr[i].active){
+          float randomX = SCREENWIDTH / 2 + rand() % SCREENWIDTH;
+          float randomY = SCREENHEIGHT / 2 + rand() % SCREENHEIGHT;
+          enemyArr[i] = createEnemyObject(randomX, randomY);
+          CURRENTSPAWNEDENEMIES++;
         }
+      }
     }
 }
 
@@ -134,6 +146,8 @@ bool checkIfAllEnemiesAreDestroyed(Enemy* enemy){
 void enemyLoseHealth(int damage, Enemy *enemy){
   enemy->health -= damage;
 }
+
+
 
 
 
