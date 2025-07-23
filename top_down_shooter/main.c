@@ -20,7 +20,7 @@ const unsigned int MAXSPAWNENEMIES = 40;
 unsigned int ENEMYCOUNTER = 0;
 unsigned int CURRENTSPAWNEDENEMIES = 0;
 
-void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Round *rnd, Coins *coins);
+void updateGameState(Player *player, Enemy *enemyArr, Projectile *projectileArr, Round *rnd, Coins *coins);
 
 int main(void){
 
@@ -59,7 +59,7 @@ int main(void){
 
 }
 
-void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Round *rnd, Coins *coins){
+void updateGameState(Player *player, Enemy *enemyArr, Projectile *projectileArr, Round *rnd, Coins *coins){
     
     updatePlayer(player);
 
@@ -71,8 +71,6 @@ void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr,
 
     //only do these if there are enemies or the round hasn't ended yet
     if(!inBreak(rnd)){
-      //check if the enemies are dead
-      endRound(checkIfAllEnemiesAreDestroyed(enemyArr), rnd, enemyArr);
       //check if the player has anything to shoot at if so create the projectile with the target of the indexOfEnemy
       int indexOfEnemy = findClosestEnemyToPlayer(enemyArr, player, coins);
       //only call this if there are more enemies that need to be spawned druring the round

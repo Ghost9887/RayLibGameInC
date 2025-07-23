@@ -41,7 +41,7 @@ void drawEnemy(Enemy *enemy){
   DrawRectangle(enemy->x, enemy->y, enemy->width, enemy->height, RED);
 }
 
-void updateEnemy(Enemy* enemyArr, Player *player){
+void updateEnemy(Enemy *enemyArr, Player *player){
     for(int i = 0; i < MAXSPAWNENEMIES; i++){
       if(!enemyArr[i].active) continue;
       enemyMovement(&enemyArr[i], player);
@@ -53,7 +53,7 @@ void updateEnemy(Enemy* enemyArr, Player *player){
     }
 }
 
-void initEnemyArr(Enemy* enemyArr){
+void initEnemyArr(Enemy *enemyArr){
     //initialize the projectile array
   for (int i = 0; i < MAXENEMIES; i++) {
     enemyArr[i].active = false;
@@ -66,7 +66,7 @@ void initEnemyArr(Enemy* enemyArr){
 }
 
 //MAYBE MOVE TO PLAYER FILE ???
-int findClosestEnemyToPlayer(Enemy* enemyArr, Player *player, Coins *coins){
+int findClosestEnemyToPlayer(Enemy *enemyArr, Player *player, Coins *coins){
   int indexOfEnemy;
   float minDistance = 100000.0f;
   for(int i = 0; i < MAXSPAWNENEMIES; i++){
@@ -110,7 +110,7 @@ bool checkCollisionWithPlayer(Enemy *enemy, Player *player){
 }
 
 //spawns the enemies
-void createEnemies(Enemy* enemyArr, int enemyCount){
+void createEnemies(Enemy *enemyArr, int enemyCount){
     static bool seeded = false;
     if (!seeded) {
         srand(time(NULL));
@@ -136,7 +136,7 @@ void createEnemies(Enemy* enemyArr, int enemyCount){
     }
 }
 
-bool checkIfAllEnemiesAreDestroyed(Enemy* enemy){
+bool checkIfAllEnemiesAreDestroyed(Enemy *enemy){
   if(ENEMYCOUNTER == 0){
     return true;
   }

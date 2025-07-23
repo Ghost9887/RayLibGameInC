@@ -34,7 +34,7 @@ void playerMovement(Player *player){
   if(IsKeyDown(KEY_W) && player->y > 0) player->y -= movementSpeed;
 }
 
-void playerShoot(Player *player, Projectile* projectileArr, int indexOfEnemy, Coins *coins){
+void playerShoot(Player *player, Projectile *projectileArr, int indexOfEnemy, Coins *coins){
   int indexToReplace;
   for(indexToReplace = 0; indexToReplace < MAXPROJECTILES; indexToReplace++){
     if(!projectileArr[indexToReplace].active){

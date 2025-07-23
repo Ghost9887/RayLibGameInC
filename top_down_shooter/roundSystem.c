@@ -37,7 +37,7 @@ void changeBreak(bool value, Round *rnd){
   rnd->inBreak = value;
 }
 
-void startRound(Round *rnd, Enemy* enemyArr){
+void startRound(Round *rnd, Enemy *enemyArr){
   rnd->round = getRound(rnd) + 1; 
   changeBreak(false, rnd);
   ENEMYCOUNTER = getAmountOfEnemies(rnd);
@@ -45,15 +45,18 @@ void startRound(Round *rnd, Enemy* enemyArr){
   createEnemies(enemyArr, getAmountOfEnemies(rnd));
 }
 
-void endRound(bool completed, Round *rnd, Enemy* enemyArr){
+void endRound(bool completed, Round *rnd){
   if(completed){
     rnd->inBreak = true;
     rnd->breakTimer = 10.0f;
   }
 }
 
-void updateBreak(Round *rnd, Enemy* enemyArr){
-  if(inBreak(rnd)){
+void updateBreak(Round *rnd, Enemy *enemyArr){
+  if(!inBreak(rnd)){
+  endRound(checkIfAllEnemiesAreDestroyed(enemyArr), rnd);
+  }
+  else if(inBreak(rnd)){
     reduceBreakTimer(rnd);
     showBreakUI(getBreakTimer(rnd));
     if(getBreakTimer(rnd) <= 0){

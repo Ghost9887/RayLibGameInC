@@ -35,7 +35,7 @@ void moveProjectile(Projectile *projectile, Enemy *enemy) {
 }
 
 
-void updateProjectiles(Projectile* projectileArr, Enemy* enemyArr, Coins *coins){
+void updateProjectiles(Projectile *projectileArr, Enemy *enemyArr, Coins *coins){
       for(int i = 0; i < MAXPROJECTILES; i++){
        if(projectileArr[i].active){
           if(checkForCollisionWithEnemy(&projectileArr[i], &enemyArr[projectileArr[i].target], coins)){ 
@@ -57,7 +57,7 @@ void destroyProjectile(Projectile *projectile){
   projectile->active = false;
 }
 
-void initProjectileArray(Projectile* projectileArr){
+void initProjectileArray(Projectile *projectileArr){
   //initialize the projectile array
   for (int i = 0; i < MAXPROJECTILES; i++) {
     projectileArr[i].active = false;
