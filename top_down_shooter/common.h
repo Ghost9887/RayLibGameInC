@@ -49,4 +49,12 @@ typedef struct{
   int coinCounter;
 }Coins;
 
+typedef struct{
+  float x;
+  float y;
+  int damage;
+  float fireRate;
+  int magSize;
+}Weapon;
+
 #endif
