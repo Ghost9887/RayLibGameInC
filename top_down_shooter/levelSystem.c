@@ -49,14 +49,14 @@ void endLevel(bool completed, Level *lvl, Enemy* enemyArr){
 }
 
 void updateBreak(Level *lvl, Enemy* enemyArr){
- if(inBreak(lvl)){
-      reduceBreakTimer(lvl);
-      showBreakUI(getBreakTimer(lvl));
-      if(getBreakTimer(lvl) <= 0){
-        changeBreak(false, lvl);
-        startLevel(lvl, enemyArr);
-      }
-      }
+  if(inBreak(lvl)){
+    reduceBreakTimer(lvl);
+    showBreakUI(getBreakTimer(lvl));
+    if(getBreakTimer(lvl) <= 0){
+      changeBreak(false, lvl);
+      startLevel(lvl, enemyArr);
+    }
+  }
 }
 
 

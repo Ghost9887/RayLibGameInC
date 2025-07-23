@@ -69,11 +69,10 @@ int findClosestEnemyToPlayer(Enemy* enemyArr, Player *player, Coins *coins){
   int indexOfEnemy;
   float minDistance = 100000.0f;
   for(int i = 0; i < MAXENEMIES; i++){
+    if(!enemyArr[i].active) continue;
     float temp = minDistance;
-    if(enemyArr[i].active){
-      checkHealth(&enemyArr[i], coins);
-      minDistance = fabs(fmin(calculateDistance(&enemyArr[i], player), minDistance));
-    }
+    checkHealth(&enemyArr[i], coins);
+    minDistance = fabs(fmin(calculateDistance(&enemyArr[i], player), minDistance));
     if(temp != minDistance){
       indexOfEnemy = i;
     }
