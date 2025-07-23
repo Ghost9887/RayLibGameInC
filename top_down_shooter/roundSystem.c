@@ -56,7 +56,7 @@ void updateBreak(Round *rnd, Enemy *enemyArr){
   if(!inBreak(rnd)){
   endRound(checkIfAllEnemiesAreDestroyed(enemyArr), rnd);
   }
-  else if(inBreak(rnd)){
+  else{
     reduceBreakTimer(rnd);
     showBreakUI(getBreakTimer(rnd));
     if(getBreakTimer(rnd) <= 0){
