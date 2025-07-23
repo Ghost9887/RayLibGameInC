@@ -7,12 +7,12 @@
 
 extern int MAXPROJECTILES;
 
-Projectile createProjectile(Enemy* enemyArr, Player *player, Coins *coins){
+Projectile createProjectile(int indexOfEnemy, Player *player, Coins *coins){
   Projectile projectile;
   projectile.x = player->x;
   projectile.y = player->y;
   projectile.damage = 100;
-  projectile.target = findClosestEnemyToPlayer(enemyArr, player, coins); 
+  projectile.target = indexOfEnemy; 
   projectile.speed = 30;
   projectile.active = true;
   projectile.lifetime = 10.0f;
