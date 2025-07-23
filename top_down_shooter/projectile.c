@@ -7,7 +7,7 @@
 
 extern int MAXPROJECTILES;
 
-Projectile createProjectile(int indexOfEnemy, Player *player, Coins *coins){
+Projectile createProjectile(int indexOfEnemy, Player *player){
   Projectile projectile;
   projectile.x = player->x;
   projectile.y = player->y;

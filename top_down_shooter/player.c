@@ -14,7 +14,7 @@ Player createPlayerObject(){
   player.width = 30;
   player.height = 50;
   player.health = 100;
-  player.cooldown = 1.0f;
+  player.cooldown = 0.5f;
   player.timer = player.cooldown * (float) TARGETFPS;
   player.canShoot = false;
   player.invTime = 0.0f;
@@ -41,11 +41,9 @@ void playerShoot(Player *player, Projectile* projectileArr, int indexOfEnemy, Co
       break;
     }
   }
-  if(checkIfPlayerCanShoot(player)){
-    player->canShoot = false;
-    player->timer = player->cooldown * (float) TARGETFPS;
-    projectileArr[indexToReplace] = createProjectile(indexOfEnemy, player, coins); 
-  }
+  player->canShoot = false;
+  player->timer = player->cooldown * (float) TARGETFPS;
+  projectileArr[indexToReplace] = createProjectile(indexOfEnemy, player); 
 }
 
 bool checkIfPlayerCanShoot(Player *player) {
