@@ -40,10 +40,10 @@ typedef struct{
 }Projectile;
 
 typedef struct{
-  int level;
+  int round;
   bool inBreak;
   float breakTimer;
-}Level;
+}Round;
 
 typedef struct{
   int coinCounter;

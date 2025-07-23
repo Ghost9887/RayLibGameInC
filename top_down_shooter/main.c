@@ -3,7 +3,7 @@
 #include "enemy.h"
 #include "projectile.h"
 #include "ui.h"
-#include "levelSystem.h"
+#include "roundSystem.h"
 #include "coins.h"
 #include <stdio.h>
 #include <stdbool.h>
@@ -20,7 +20,7 @@ const unsigned int MAXSPAWNENEMIES = 40;
 unsigned int ENEMYCOUNTER = 0;
 unsigned int CURRENTSPAWNEDENEMIES = 0;
 
-void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Level *lvl, Coins *coins);
+void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Round *rnd, Coins *coins);
 
 int main(void){
 
@@ -33,12 +33,12 @@ int main(void){
   initProjectileArray(projectileArr);
   Enemy enemyArr[MAXENEMIES];
   initEnemyArr(enemyArr);
-  Level lvl = createLevel();
+  Round rnd = createRoundObject();
   Coins coins = createCoins();
   Player player = createPlayerObject();
   
   //start the first round
-  startLevel(&lvl, enemyArr);
+  startRound(&rnd, enemyArr);
 
   //MAIN GAME LOOP 
   while(!WindowShouldClose()){
@@ -48,7 +48,7 @@ int main(void){
       ClearBackground(RAYWHITE);
 
       //UPDATE ALL OF THE GAME STATES
-      updateGameState(&player, enemyArr, projectileArr, &lvl, &coins);
+      updateGameState(&player, enemyArr, projectileArr, &rnd, &coins);
 
     EndDrawing();
   }
@@ -59,25 +59,25 @@ int main(void){
 
 }
 
-void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Level *lvl, Coins *coins){
+void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr, Round *rnd, Coins *coins){
     
     updatePlayer(player);
 
     //checks if the round should end
-    updateBreak(lvl, enemyArr);
+    updateBreak(rnd, enemyArr);
     
     //drawing
-    drawUI(player->health, ENEMYCOUNTER, player->invTime, lvl->level, getCoins(coins), CURRENTSPAWNEDENEMIES);
+    drawUI(player->health, ENEMYCOUNTER, player->invTime, rnd->round, getCoins(coins), CURRENTSPAWNEDENEMIES);
 
     //only do these if there are enemies or the round hasn't ended yet
-    if(!inBreak(lvl)){
+    if(!inBreak(rnd)){
       //check if the enemies are dead
-      endLevel(checkIfAllEnemiesAreDestroyed(enemyArr), lvl, enemyArr);
+      endRound(checkIfAllEnemiesAreDestroyed(enemyArr), rnd, enemyArr);
       //check if the player has anything to shoot at if so create the projectile with the target of the indexOfEnemy
       int indexOfEnemy = findClosestEnemyToPlayer(enemyArr, player, coins);
       //only call this if there are more enemies that need to be spawned druring the round
       if(MAXSPAWNENEMIES <= ENEMYCOUNTER){
-        createEnemies(enemyArr, getAmountOfEnemies(lvl));
+        createEnemies(enemyArr, getAmountOfEnemies(rnd));
       }
       //check if the closes enemy is in range of shooting
       if(indexOfEnemy != -2 && checkIfPlayerCanShoot(player)){
