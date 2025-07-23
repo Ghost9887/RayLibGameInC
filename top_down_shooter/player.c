@@ -34,7 +34,7 @@ void playerMovement(Player *player){
   if(IsKeyDown(KEY_W) && player->y > 0) player->y -= movementSpeed;
 }
 
-void playerShoot(Player *player, Projectile* projectileArr){
+void playerShoot(Player *player, Projectile* projectileArr, Enemy* enemyArr, Coins *coins){
   int indexToReplace;
   for(indexToReplace = 0; indexToReplace < MAXPROJECTILES; indexToReplace++){
     if(!projectileArr[indexToReplace].active){
@@ -44,7 +44,7 @@ void playerShoot(Player *player, Projectile* projectileArr){
   if(checkIfPlayerCanShoot(player)){
     player->canShoot = false;
     player->timer = player->cooldown * (float) TARGETFPS;
-    projectileArr[indexToReplace] = createProjectile(player->x, player->y); 
+    projectileArr[indexToReplace] = createProjectile(enemyArr, player, coins); 
   }
 }
 

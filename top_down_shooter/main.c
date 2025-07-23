@@ -74,12 +74,13 @@ void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr,
     endLevel(completed, lvl, enemyArr);
 
     //check if the player has anything to shoot at
-    Enemy *enemy = findClosestEnemyToPlayer(enemyArr, player, coins);
-    if(enemy != NULL){
+    //we assign a enemy to a projectiel instead passing the closes enemy
+    int enemyIndex = findClosestEnemyToPlayer(enemyArr, player, coins);
+    if(enemyIndex != -2){
       if(checkIfPlayerCanShoot(player)){   
-        playerShoot(player, projectileArr);
+        playerShoot(player, projectileArr, enemyArr, coins);
       }
-      updateProjectiles(projectileArr, enemy, coins); 
+      updateProjectiles(projectileArr, enemyArr, coins); 
     }
       updateEnemy(enemyArr, player);
     }

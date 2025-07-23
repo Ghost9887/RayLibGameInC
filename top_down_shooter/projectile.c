@@ -7,11 +7,12 @@
 
 extern int MAXPROJECTILES;
 
-Projectile createProjectile(float posX, float posY){
+Projectile createProjectile(Enemy* enemyArr, Player *player, Coins *coins){
   Projectile projectile;
-  projectile.x = posX;
-  projectile.y = posY;
+  projectile.x = player->x;
+  projectile.y = player->y;
   projectile.damage = 100;
+  projectile.target = findClosestEnemyToPlayer(enemyArr, player, coins); 
   projectile.speed = 30;
   projectile.active = true;
   projectile.lifetime = 10.0f;
@@ -34,16 +35,15 @@ void moveProjectile(Projectile *projectile, Enemy *enemy) {
 }
 
 
-void updateProjectiles(Projectile* projectileArr, Enemy *enemy, Coins *coins){
+void updateProjectiles(Projectile* projectileArr, Enemy* enemyArr, Coins *coins){
       for(int i = 0; i < MAXPROJECTILES; i++){
        if(projectileArr[i].active){
-          if(checkForCollisionWithEnemy(&projectileArr[i], enemy, coins)){ 
+          if(checkForCollisionWithEnemy(&projectileArr[i], &enemyArr[projectileArr[i].target], coins)){ 
             destroyProjectile(&projectileArr[i]);
             addCoins(20, coins);
-            //MAKE THIS A FUNCTION
-            enemyLoseHealth(50, enemy);
+            enemyLoseHealth(50, &enemyArr[projectileArr[i].target]);
           }
-          moveProjectile(&projectileArr[i], enemy);
+          moveProjectile(&projectileArr[i], &enemyArr[projectileArr[i].target]);
           drawProjectile(&projectileArr[i]);
           projectileArr[i].lifetime -= GetFrameTime();
           if(projectileArr[i].lifetime <= 0){

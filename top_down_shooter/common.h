@@ -33,6 +33,7 @@ typedef struct{
   float y;
   int damage;
   int speed;
+  int target;
   bool active;
   float lifetime;
   float size;

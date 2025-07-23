@@ -65,7 +65,7 @@ void initEnemyArr(Enemy* enemyArr){
 }
 
 //MAYBE MOVE TO PLAYER FILE ???
-Enemy *findClosestEnemyToPlayer(Enemy* enemyArr, Player *player, Coins *coins){
+int findClosestEnemyToPlayer(Enemy* enemyArr, Player *player, Coins *coins){
   int indexOfEnemy;
   float minDistance = 100000.0f;
   for(int i = 0; i < MAXENEMIES; i++){
@@ -80,9 +80,9 @@ Enemy *findClosestEnemyToPlayer(Enemy* enemyArr, Player *player, Coins *coins){
   } 
   //checks if the player can shoot or not
   if(minDistance < player->range){
-  return &enemyArr[indexOfEnemy];
+  return indexOfEnemy;
   }
-  return NULL;
+  return -2;
 }
 
 float calculateDistance(Enemy *enemy, Player *player){
