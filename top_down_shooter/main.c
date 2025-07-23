@@ -71,13 +71,11 @@ void updateGameState(Player *player, Enemy* enemyArr, Projectile* projectileArr,
     if(!inBreak(lvl)){
       //check if the enemies are dead
       endLevel(checkIfAllEnemiesAreDestroyed(enemyArr), lvl, enemyArr);
-      //check if the player has anything to shoot at
+      //check if the player has anything to shoot at if so create the projectile with the target of the indexOfEnemy
       int indexOfEnemy = findClosestEnemyToPlayer(enemyArr, player, coins);
       //check if the closes enemy is in range of shooting
-      if(indexOfEnemy != -2){
-        if(checkIfPlayerCanShoot(player)){   
-          playerShoot(player, projectileArr, indexOfEnemy, coins);
-        }
+      if(indexOfEnemy != -2 && checkIfPlayerCanShoot(player)){
+        playerShoot(player, projectileArr, indexOfEnemy, coins);
       }
       updateProjectiles(projectileArr, enemyArr, coins); 
     }
