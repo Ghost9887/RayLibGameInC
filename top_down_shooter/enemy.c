@@ -79,7 +79,8 @@ int findClosestEnemyToPlayer(Enemy *enemyArr, Player *player, Coins *coins){
     }
   } 
   //checks if the player can shoot or not
-  if(minDistance < player->range){
+  Weapon weapon = player->weapon;
+  if(minDistance < weapon.range){
   return indexOfEnemy;
   }
   return -2;

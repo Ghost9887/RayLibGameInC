@@ -1,24 +1,24 @@
 #include "player.h"
 #include "projectile.h"
 #include "raylib.h"
+#include "weapon.h"
+#include <stdio.h>
 
 extern const unsigned int SCREENWIDTH;
 extern const unsigned int SCREENHEIGHT;
 extern const unsigned int TARGETFPS;
 extern int MAXPROJECTILES;
 
-Player createPlayerObject(){
+Player createPlayerObject(Weapon weapon){
   Player player;
   player.x = (float) SCREENWIDTH / (float) 2;
   player.y = (float) SCREENHEIGHT / (float) 2;
   player.width = 30;
   player.height = 50;
   player.health = 100;
-  player.cooldown = 0.5f;
-  player.timer = player.cooldown * (float) TARGETFPS;
   player.canShoot = false;
   player.invTime = 0.0f;
-  player.range = 400.0f;
+  player.weapon = weapon;
   return player;
 }
 
@@ -42,8 +42,12 @@ void playerShoot(Player *player, Projectile *projectileArr, int indexOfEnemy, Co
     }
   }
   player->canShoot = false;
-  player->timer = player->cooldown * (float) TARGETFPS;
-  projectileArr[indexToReplace] = createProjectile(indexOfEnemy, player); 
+  Weapon weapon = player->weapon;
+  player->timer = weapon.fireRate;
+  if (indexToReplace < MAXPROJECTILES) {
+    projectileArr[indexToReplace] = createProjectile(indexOfEnemy, player, &weapon);
+  }
+
 }
 
 bool checkIfPlayerCanShoot(Player *player) {
@@ -80,11 +84,26 @@ bool isPlayerInvulnerable(Player *player){
     return false;
 }
 
-void updatePlayer(Player *player){
+void updateWeapon(Weapon *weaponArr, Player *player){
+  int index;
+  for(index = 0; index < 10; index++){
+    if(weaponArr[index].holding == true) break;
+  }
+  player->weapon = weaponArr[index];
+  weaponArr[index].x = player->x;
+  weaponArr[index].y = player->y;
+  drawWeapon(player, &player->weapon);
+  switchWeapons(player, weaponArr); //listens if the player has switched weapons
+}
+
+void updatePlayer(Player *player, Weapon *weaponArr){
   playerMovement(player);
   drawPlayer(player);
   invTimer(player);
+  updateWeapon(weaponArr, player);
 }
+
+
 
 
 

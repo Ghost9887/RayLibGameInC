@@ -7,11 +7,11 @@
 
 extern int MAXPROJECTILES;
 
-Projectile createProjectile(int indexOfEnemy, Player *player){
+Projectile createProjectile(int indexOfEnemy, Player *player, Weapon *weapon){
   Projectile projectile;
   projectile.x = player->x;
   projectile.y = player->y;
-  projectile.damage = 100;
+  projectile.damage = weapon->damage;
   projectile.target = indexOfEnemy; 
   projectile.speed = 30;
   projectile.active = true;

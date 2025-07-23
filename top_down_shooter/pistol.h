@@ -4,7 +4,6 @@
 #include "raylib.h"
 #include "common.h"
 
-Weapon createPistol(Player *player);
-void drawWeapon(Player *player);
+Weapon createPistol();
 
 #endif

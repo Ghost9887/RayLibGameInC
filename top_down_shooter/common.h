@@ -3,20 +3,6 @@
 
 #include <stdbool.h>
 
-typedef struct {
-  float x;
-  float y;
-  int width;
-  int height;
-  int health;
-  float cooldown;
-  float timer;
-  bool canShoot;
-  float invTime;
-  float range;
-}Player;
-
-
 typedef struct{
   float x;
   float y;
@@ -52,9 +38,24 @@ typedef struct{
 typedef struct{
   float x;
   float y;
+  int width;
+  int height;
   int damage;
+  float range;
   float fireRate;
-  int magSize;
+  bool holding;
 }Weapon;
+
+typedef struct{
+  float x;
+  float y;
+  int width;
+  int height;
+  int health;
+  bool canShoot;
+  float invTime;
+  float timer;
+  Weapon weapon;
+}Player;
 
 #endif
