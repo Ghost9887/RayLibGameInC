@@ -5,7 +5,8 @@
 #include <math.h>
 #include <stdio.h>
 
-extern int MAXPROJECTILES;
+extern const unsigned int MAXPROJECTILES;
+extern const unsigned int MAXSPAWNENEMIES;
 
 Projectile createProjectile(int indexOfEnemy, Player *player, Weapon *weapon){
   Projectile projectile;
@@ -17,6 +18,7 @@ Projectile createProjectile(int indexOfEnemy, Player *player, Weapon *weapon){
   projectile.active = true;
   projectile.lifetime = 10.0f;
   projectile.size = 5.0f;
+  projectile.explosive = false;
   return projectile;
 }
 
@@ -41,13 +43,19 @@ void updateProjectiles(Projectile *projectileArr, Enemy *enemyArr, Coins *coins)
           if(checkForCollisionWithEnemy(&projectileArr[i], &enemyArr[projectileArr[i].target], coins)){ 
             destroyProjectile(&projectileArr[i]);
             addCoins(20, coins);
-            enemyLoseHealth(projectileArr[i].damage, &enemyArr[projectileArr[i].target]);
+            //check wether the to do splash damage or ballistic damage
+            if(projectileArr[i].explosive){
+              explosiveProjectile(&projectileArr[i], &enemyArr[projectileArr[i].target], enemyArr);
+            }
+            else {
+              enemyLoseHealth(projectileArr[i].damage, &enemyArr[projectileArr[i].target]);
+            }
           }
           moveProjectile(&projectileArr[i], &enemyArr[projectileArr[i].target]);
           drawProjectile(&projectileArr[i]);
           projectileArr[i].lifetime -= GetFrameTime();
           if(projectileArr[i].lifetime <= 0){
-            projectileArr[i].active = false;
+            destroyProjectile(&projectileArr[i]);
           }
         }
       }
@@ -75,7 +83,29 @@ bool checkForCollisionWithEnemy(Projectile *projectile, Enemy *enemy, Coins *coi
     return CheckCollisionCircleRec(
         (Vector2){ projectile->x, projectile->y }, projectile->size, enemyRect
     );
+    
 }
+
+void explosiveProjectile(Projectile *projectile, Enemy *enemy, Enemy *enemyArr) {
+    float posX = enemy->x + enemy->width / 2.0f;
+    float posY = enemy->y + enemy->height / 2.0f;
+    float damage = (float)projectile->damage;
+    float radius = 200.0f;
+    for (int i = 0; i < MAXSPAWNENEMIES; i++) {
+        float dx = posX - enemyArr[i].x;
+        float dy = posY - enemyArr[i].y;
+        float length = fabs(sqrtf(dx * dx + dy * dy));
+        if (length <= radius) {
+            float actualDamage = damage * (1.0f - (length / radius));  
+            enemyLoseHealth(actualDamage, &enemyArr[i]);
+        }
+    }
+    enemyLoseHealth(damage, enemy); 
+    DrawCircle(posX, posY, radius, YELLOW);
+}
+
+
+
 
 
 

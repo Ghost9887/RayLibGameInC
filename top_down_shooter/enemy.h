@@ -17,6 +17,6 @@ void checkHealth(Enemy *enemy, Coins *coins);
 bool checkCollisionWithPlayer(Enemy *enemy, Player *player);
 void createEnemies(Enemy *enemArr, int enemyCount);
 bool checkIfAllEnemiesAreDestroyed(Enemy *enemy);
-void enemyLoseHealth(int damage, Enemy *enemy);
+void enemyLoseHealth(float damage, Enemy *enemy);
 
 #endif

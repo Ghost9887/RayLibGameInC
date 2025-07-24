@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include "weapon.h"
 #include <stdio.h>
+#include <string.h>
 
 extern const unsigned int SCREENWIDTH;
 extern const unsigned int SCREENHEIGHT;
@@ -18,6 +19,7 @@ Player createPlayerObject(Weapon weapon){
   player.health = 100;
   player.canShoot = false;
   player.invTime = 0.0f;
+  player.timer;
   player.weapon = weapon;
   return player;
 }
@@ -46,6 +48,13 @@ void playerShoot(Player *player, Projectile *projectileArr, int indexOfEnemy, Co
   player->timer = weapon.fireRate;
   if (indexToReplace < MAXPROJECTILES) {
     projectileArr[indexToReplace] = createProjectile(indexOfEnemy, player, &weapon);
+
+    //check if the weapon has type of explosive!
+    if(strcmp(player->weapon.type, "explosive") == 0){
+      projectileArr[indexToReplace].explosive = true;
+    }else{
+      projectileArr[indexToReplace].explosive = false;
+    }
   }
 
 }

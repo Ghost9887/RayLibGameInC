@@ -49,7 +49,8 @@ void updateEnemy(Enemy *enemyArr, Player *player){
       if (!isPlayerInvulnerable(player) && checkCollisionWithPlayer(&enemyArr[i], player)) {
         playerLoseHealth(&enemyArr[i], player);   
       }
-
+        //draw the enemy health above their heads
+        DrawText(TextFormat("%d", (int)enemyArr[i].health),enemyArr[i].x + enemyArr[i].width / 2 - 10, enemyArr[i].y + enemyArr[i].height / 2 - 60, 20, RED);
     }
 }
 
@@ -128,8 +129,8 @@ void createEnemies(Enemy *enemyArr, int enemyCount){
     }else{
       for(int i = 0; i < MAXSPAWNENEMIES; i++){
         if(!enemyArr[i].active){
-          float randomX = SCREENWIDTH / 2 + rand() % SCREENWIDTH;
-          float randomY = SCREENHEIGHT / 2 + rand() % SCREENHEIGHT;
+          float randomX = rand() % SCREENWIDTH * 2;
+          float randomY = rand() % SCREENHEIGHT * 2;
           enemyArr[i] = createEnemyObject(randomX, randomY);
           CURRENTSPAWNEDENEMIES++;
         }
@@ -144,7 +145,7 @@ bool checkIfAllEnemiesAreDestroyed(Enemy *enemy){
   return false;
 }
 
-void enemyLoseHealth(int damage, Enemy *enemy){
+void enemyLoseHealth(float damage, Enemy *enemy){
   enemy->health -= damage;
 }
 

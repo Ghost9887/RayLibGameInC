@@ -17,12 +17,13 @@ typedef struct{
 typedef struct{
   float x;
   float y;
-  int damage;
+  float damage;
   int speed;
   int target;
   bool active;
   float lifetime;
   float size;
+  bool explosive;
 }Projectile;
 
 typedef struct{
@@ -40,9 +41,10 @@ typedef struct{
   float y;
   int width;
   int height;
-  int damage;
+  float damage;
   float range;
   float fireRate;
+  char *type;
   bool holding;
 }Weapon;
 
